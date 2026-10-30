@@ -33,6 +33,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useI18n } from "@/lib/i18n";
 import { formatDate } from "@/lib/format";
 import { db } from "@/lib/db/client";
+import { useServerFn } from "@tanstack/react-start";
+import { getDashboardOverview } from "@/lib/dashboard.functions";
 import { toast } from "sonner";
 
 interface Totals {
@@ -90,6 +92,7 @@ export default function Dashboard() {
   const { locale, t } = useI18n();
   const { user, loading } = useAuth();
   const nav = useNavigate();
+  const loadOverview = useServerFn(getDashboardOverview);
   const [totals, setTotals] = useState<Totals | null>(null);
   const [recent, setRecent] = useState<RecentQr[] | null>(null);
 
