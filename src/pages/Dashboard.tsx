@@ -101,36 +101,13 @@ export default function Dashboard() {
     if (!user) return;
     let alive = true;
     (async () => {
-      const [saved, tracked] = await Promise.all([
-        db.from("saved_qrs").select("id", { count: "exact", head: true }),
-        db.from("tracked_qrs").select("id").eq("user_id", user.id),
-      ]);
-      const ids = (tracked.data ?? []).map((r: { id: string }) => r.id);
-      const trend = new Array(14).fill(0) as number[];
-      let scans = 0;
-      if (ids.length) {
-        const since = new Date(Date.now() - 13 * 86400000);
-        since.setHours(0, 0, 0, 0);
-        const [{ count }, { data: recentScans }] = await Promise.all([
-          db.from("qr_scans").select("id", { count: "exact", head: true }).in("tracked_qr_id", ids),
-          db
-            .from("qr_scans")
-            .select("scanned_at")
-            .in("tracked_qr_id", ids)
-            .gte("scanned_at", since.toISOString()),
-        ]);
-        scans = count ?? 0;
-        for (const row of (recentScans ?? []) as { scanned_at: string }[]) {
-          const day = Math.floor((new Date(row.scanned_at).getTime() - since.getTime()) / 86400000);
-          if (day >= 0 && day < 14) trend[day] += 1;
-        }
-      }
-      if (alive) setTotals({ saved: saved.count ?? 0, tracked: ids.length, scans, trend });
+      const overview = await loadOverview();
+      if (alive) setTotals(overview);
     })();
     return () => {
       alive = false;
     };
-  }, [user]);
+  }, [user, loadOverview]);
 
   useEffect(() => {
     if (!user) return;
