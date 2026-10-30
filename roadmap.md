@@ -5,8 +5,8 @@
 - [x] Fase 3b: post_logout_redirect_uris beheren in console; verbonden apps intrekken in /studio/account (bestond)
 - [x] Nulmeting 30/10: tsgo 0 fouten, 865 tests groen na snapshot-refresh (0117/0118)
 - [x] Fase 4a: merkbescherming (db/0116, isReservedName op handles/aliassen/workspaces) + namespace matrix (gratis = 4-teken suffix)
-- [ ] Fase 4b: admin-vrijgave merknaam in UI, schone slug bij upgrade naar Plus/Pro, DNS-claims, passkey-first login, Data Vault, scope-switcher, workspace-quotum
-- [ ] Fase 5: rout_app RLS-policies, users-consolidatie en immutable migraties/snapshot
+- [x] Fase 4b: schone slug bij Plus/Pro (met merkvrijgave), Team naar /studio/w/$slug/settings, workspace-quotum in Bestanden en media (30/10)
+- [x] Fase 5: db/0120 RLS-policies (70 tabellen, geheime tabellen bewust dicht), db/0121 users.auth_user_id → neon_auth.user (cascade), password_hash gemarkeerd als verouderd; snapshot via replay
 - [x] tsgo 0 fouten, 861 tests groen, snapshot via scripts/schema-replay-snapshot.ts
 - [ ] Acceptatie live: volledige Vitest-suite, replay/catalog/no-runtime-DDL en ingelogde end-to-end controles
 - [ ] Infra buiten code: signing KEK op Vercel, bestaande keys verzegelen en public CREATE-recht intrekken
@@ -35,13 +35,16 @@
 - [x] typecheck + tests
 - [ ] db/107 migratie draaien (wacht op database-sleutel)
 
+- [ ] db/0120 + db/0121 op Neon draaien — wacht op live databasesleutel; rls-audit pas zinvol als rout_app geen bypassrls meer heeft
+- [ ] password_hash definitief verwijderen — pas na deploy en wanneer niemand nog met het oude wachtwoord inlogt
+
 ## Import-ronde (okt 2026)
 - [x] Project geïmporteerd, Neon gekoppeld, 801 tests groen
 - [x] Testaccount test_preview@rout.be (bestond al; wachtwoord vernieuwd met --rotate) en ingelogd in preview
 - [x] Ingelogde controles: workspace-switch, Pagina-Wisselaar 3 tabs, 0 MB-upload melding
 - [x] Publieke boekingspagina: intakevragen + gekozen tijd uit widget end-to-end (subpagina-routes hersteld)
 - [x] RLS-audit gedraaid: 79 tabellen RLS aan, 77 zonder policies, rout_app omzeilt RLS (beslissing gebruiker nodig)
-- [ ] Bestanden en media toont in workspace nog persoonlijk quotum (0/500 MB)
+- [x] Bestanden en media toont in workspace het workspace-quotum
 - [ ] Links/statistieken/instellingen per scope (Studio toont persoonlijk profiel in workspace)
 
 ## RFC-001 Blueprint (wacht op goedkeuring Lead Architect)
@@ -50,6 +53,6 @@
 - [ ] Legacy signing key verzegelen (`bun scripts/seal-signing-keys.ts`) — wacht op deploy van deze code naar rout.be + ROUT_PROVIDER_SIGNING_KEK op Vercel en preview
 - [ ] rout_app CREATE-recht op public intrekken — wacht op deploy naar rout.be (oude code voert nog DDL uit)
 - [x] Fase 1: SSOT-opruiming, runtime-DDL bevriezen, baseline + schema-snapshot + db-types, replay-test in CI
-- [ ] Fase 2: identity_links + e-mail-automerge uit
-- [ ] Fase 3: IdP-uitbreidingen (pairwise sub, refresh/revoke/introspect, end-session)
-- [ ] Fase 4: Namespace Matrix + reserved brands, DNS-handle + badge, passkey-first login, Data Vault export/hard delete, context-menu, /studio/account vs /studio/w/$slug/settings
+- [x] Fase 2: identity_links + e-mail-automerge uit
+- [x] Fase 3: IdP-uitbreidingen (pairwise sub, refresh/revoke/introspect, end-session)
+- [x] Fase 4: Namespace Matrix + reserved brands, DNS-claims, Data Vault, /studio/account vs /studio/w/$slug/settings

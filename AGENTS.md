@@ -54,3 +54,7 @@
 
 - Brand protection comes only from `src/lib/reserved-brands.ts` (`isReservedName`, mirrored in db/0116 `reserved_brands`) and is applied inside `isReservedHandle` and `isValidWorkspaceSlug`; free workspaces get `matrixWorkspaceSlug(..., "free")` with a random 4-char suffix. Why: one rule for handles, aliases and slugs.
 - Without a live database, refresh db/schema.snapshot.json + db-types via `bun scripts/schema-replay-snapshot.ts` (PGlite replay); confirm live with `schema-snapshot.ts --check`. Why: the snapshot must track every migration even offline.
+
+- Clean workspace slugs (suffix dropped) are claimed only via `claimCleanWorkspaceSlug`, decided by pure `checkCleanSlugClaim` (paid plan from the entitlement engine, `isValidWorkspaceSlug(slug, { brandReleased })`, uniqueness). Why: one rule decides plan, brand release and uniqueness.
+- RLS policies are a single `rout_scope` policy per table (db/0120): owner columns = `rout_current_user_id()` from `rout.user_id`, workspace rows via `rout_is_workspace_member`; secret/server-only tables keep no policy. `public.users.auth_user_id` links to `neon_auth."user"` (cascade); `users.id` is not that FK because legacy ids differ. Why: deny by default without breaking legacy accounts.
+- Studio storage display reads `getActiveScopeStorage` (same scope resolution as `checkActiveScopeUpload`); workspace team/address live at `/studio/w/$slug/settings`, never on the personal account page. Why: no personal data or quota shown inside a workspace.
