@@ -81,7 +81,7 @@ export default function AccountSettings() {
   const tab = parseTab(search.tab);
 
   const setTab = (next: SettingsTab) => {
-    nav(`/settings?tab=${next}`, { replace: true });
+    nav(`/studio/account?tab=${next}`, { replace: true });
   };
 
   const [displayName, setDisplayName] = useState("");
