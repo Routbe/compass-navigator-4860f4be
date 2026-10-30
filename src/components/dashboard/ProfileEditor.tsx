@@ -141,6 +141,7 @@ import { oauthAvatarOf } from "@/lib/oauth-avatar";
 import { BlueskyWizard } from "@/components/dashboard/BlueskyWizard";
 import { LiveStatusAccordion } from "@/components/studio/LiveStatusAccordion";
 import { ShareMenu } from "@/components/profile/ShareMenu";
+import { DesignTemplatesPanel } from "@/components/settings/DesignTemplatesPanel";
 
 export type ProfileVariant = "verified" | "alias";
 
@@ -1137,6 +1138,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
               />
           )}
 
+          {tab === "design" && <DesignTemplatesPanel />}
           {tab === "design" && (
             <Accordion type="single" collapsible className="space-y-3">
               <ProfileThemePicker
@@ -1349,7 +1351,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
                       {t("studio.editor.billingHelp")}
                     </p>
                     <a
-                      href="/settings?tab=payments"
+                      href="/studio/account?tab=payments"
                       className="inline-block rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted"
                     >
                       {t("studio.editor.billingLink")}
@@ -1375,7 +1377,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
                       {t("studio.editor.dataHelp")}
                     </p>
                     <a
-                      href="/settings?tab=data"
+                      href="/studio/account?tab=data"
                       className="inline-block rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted"
                     >
                       {t("studio.editor.dataLink")}

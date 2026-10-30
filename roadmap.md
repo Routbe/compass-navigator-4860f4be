@@ -16,7 +16,7 @@
 - [ ] Smart widget: drie vrije tijden en vooraf gekozen boekingscontext
 - [ ] Nieuwe migraties uitvoeren en volledige scope/RLS-audit verifiëren
 - [ ] Preview-testaccount seeden en ingelogde workspace/tabs/0 MB-upload controleren
-- [ ] Nieuwe regeltests en architectuurnotities afronden
+- [x] Nieuwe regeltests en architectuurnotities afronden
 - [x] Fase 1: kleinere rondleiding-knop, Coach verkleint tot bolletje met %-ring
 - [x] Fase 2: één Coach-score met checklist (verificatie + extra pagina meegeteld)
 - [x] Fase 3: opslaglimiet op alle uploadpaden; video-links gevalideerd; concept/publiceren bestond al
@@ -25,13 +25,13 @@
 - [ ] Migratie db/106 draaien (wacht op database-sleutel; tabel wordt ook automatisch aangemaakt)
 - [ ] Video-upload (Pro) naar Scaleway: wacht op opslagsleutels om te testen
 - [x] Logo's Mastodon/wsocial.eu overal gelijk, naam "wsocial.eu"
-- [ ] Bovenbalk-glitch in venster Live integratie toevoegen
-- [ ] Snapchat-koppeling herstellen
-- [ ] Mastodon rel="me" verificatie bij Identiteit
+- [x] Bovenbalk-glitch in venster Live integratie toevoegen (titel botst niet meer met sluitknop)
+- [ ] Snapchat-koppeling testen — wacht op SNAPCHAT_CLIENT_ID/SECRET
+- [x] Mastodon rel="me" verificatie bij Identiteit (bestond, getest)
 - [x] Scope-wisselaar in profielmenu op alle pagina's
 - [x] Workspace publieke pagina rout.be/w/slug (slug: min 3, a-z0-9-, gereserveerde woorden)
-- [ ] Links/statistieken/instellingen per scope
-- [ ] Rondleiding als compact (?) icoon
+- [x] Links/statistieken/instellingen per scope (dashboard-totalen per scope, workspace-instellingen apart)
+- [x] Rondleiding als compact (?) icoon
 - [x] typecheck + tests
 - [ ] db/107 migratie draaien (wacht op database-sleutel)
 
@@ -45,7 +45,7 @@
 - [x] Publieke boekingspagina: intakevragen + gekozen tijd uit widget end-to-end (subpagina-routes hersteld)
 - [x] RLS-audit gedraaid: 79 tabellen RLS aan, 77 zonder policies, rout_app omzeilt RLS (beslissing gebruiker nodig)
 - [x] Bestanden en media toont in workspace het workspace-quotum
-- [ ] Links/statistieken/instellingen per scope (Studio toont persoonlijk profiel in workspace)
+- [x] Statistieken per scope; Studio-profiel in workspace volgt de bestaande scope-routes
 
 ## RFC-001 Blueprint (wacht op goedkeuring Lead Architect)
 - [x] Blauwdruk geschreven (SSOT, IdP, Identity Graph) — /mnt/documents/ROUT-Architectural-Blueprint.md
@@ -56,3 +56,8 @@
 - [x] Fase 2: identity_links + e-mail-automerge uit
 - [x] Fase 3: IdP-uitbreidingen (pairwise sub, refresh/revoke/introspect, end-session)
 - [x] Fase 4: Namespace Matrix + reserved brands, DNS-claims, Data Vault, /studio/account vs /studio/w/$slug/settings
+
+## Context-menu & instellingen (30/10)
+- [x] Profielmenu context-bewust (badge + plan, workspace-links, Account & Beveiliging onderaan)
+- [x] /studio/account als globale pagina, /settings verwijst door, ontwerpsjablonen naar Studio Vormgeving
+- [ ] Dashboard-performance: blauwdruk wacht op goedkeuring (/mnt/documents/ROUT-Dashboard-Performance-Blueprint.md)

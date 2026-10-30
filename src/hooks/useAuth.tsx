@@ -17,7 +17,7 @@ import { withAuthTimeout, AUTH_GUARD_TIMEOUT_MS } from "@/lib/auth-timeout";
  * provider — every lookup resolves against Neon in Frankfurt.
  */
 
-const PROTECTED_PREFIXES = ["/dashboard", "/settings", "/domains", "/admin"];
+const PROTECTED_PREFIXES = ["/dashboard", "/settings", "/studio/account", "/domains", "/admin"];
 
 export type { AuthUser };
 

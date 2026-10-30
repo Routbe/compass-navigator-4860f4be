@@ -26,6 +26,7 @@ import { DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from 
 import { ArrowLeftRight, Check as CheckIcon, Plus as PlusIcon, User as UserIcon, Users as UsersIcon } from "lucide-react";
 import { canUseDeveloperTools } from "@/lib/workspace-rules";
 import { getMyAccount } from "@/lib/account.functions";
+import { contextBadge, contextLinks, GLOBAL_ACCOUNT_LINK } from "@/lib/context-menu";
 
 /**
  * Account context only. Platform tools live in the burger menu so the two
@@ -106,6 +107,13 @@ export function ProfileMenu() {
   const handle = username || user.email?.split("@")[0] || "you";
   const tierLabel = earlyBeliever ? "Early Believer" : verified || tier === "pro" ? "Pro" : "Free";
   const isPaidTier = tierLabel !== "Free";
+  const activeWs = scopeApi.active;
+  const menuCtx = {
+    workspace: activeWs ? { name: activeWs.name, slug: activeWs.slug, plan: activeWs.plan } : null,
+    personalPlan: verified || tier === "pro" ? "pro" : "free",
+  };
+  const badge = contextBadge(menuCtx);
+  const links = contextLinks(menuCtx);
 
   return (
     <div className="flex items-center gap-3 sm:gap-4">
@@ -168,16 +176,16 @@ export function ProfileMenu() {
             </DropdownMenuSubContent>
           </DropdownMenuSub>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => nav("/studio")} className="gap-2">
-            <Sparkles className="h-4 w-4 shrink-0" aria-hidden /> Profile Hub Studio
-          </DropdownMenuItem>
-
-          <DropdownMenuItem onClick={() => nav("/dashboard")} className="gap-2">
-            <LayoutDashboard className="h-4 w-4 shrink-0" aria-hidden /> Dashboard
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => nav("/settings")} className="gap-2">
-            <Settings className="h-4 w-4 shrink-0" aria-hidden /> Account &amp; Security
-          </DropdownMenuItem>
+          <div className="flex items-center gap-2 px-2 py-1.5 text-xs">
+            <span className="truncate font-medium">{badge.label}</span>
+            <span className="ml-auto shrink-0 rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] font-semibold text-muted-foreground">{badge.plan}</span>
+          </div>
+          {links.map((l) => (
+            <DropdownMenuItem key={l.key} onClick={() => nav(l.to)} className="gap-2">
+              {l.key === "studio" ? <Sparkles className="h-4 w-4 shrink-0" aria-hidden /> : l.key === "dashboard" ? <LayoutDashboard className="h-4 w-4 shrink-0" aria-hidden /> : <UsersIcon className="h-4 w-4 shrink-0" aria-hidden />}
+              {l.label}
+            </DropdownMenuItem>
+          ))}
           {devTools && (
             <DropdownMenuItem asChild>
               <a href="/console" target="_blank" rel="noopener noreferrer" className="gap-2">
@@ -189,15 +197,18 @@ export function ProfileMenu() {
 
 
           <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => nav(GLOBAL_ACCOUNT_LINK.to)} className="gap-2">
+            <Settings className="h-4 w-4 shrink-0" aria-hidden /> {GLOBAL_ACCOUNT_LINK.label}
+          </DropdownMenuItem>
           <DropdownMenuItem
-            className="gap-2 text-red-600"
+            className="gap-2 text-destructive"
             onClick={async () => {
               clearAdminRoleCache();
               await signOut();
               nav("/", { replace: true });
             }}
           >
-            <LogOut className="h-4 w-4 shrink-0" aria-hidden /> Sign Out
+            <LogOut className="h-4 w-4 shrink-0" aria-hidden /> Uitloggen
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

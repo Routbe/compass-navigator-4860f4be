@@ -106,6 +106,7 @@ import { Route as AuthenticatedDashboardBlueskyRouteImport } from './routes/_aut
 import { Route as AuthenticatedDashboardDomainsRouteImport } from './routes/_authenticated/dashboard.domains'
 import { Route as AuthenticatedDashboardProfileRouteImport } from './routes/_authenticated/dashboard.profile'
 import { Route as AuthenticatedDashboardRoutesRouteImport } from './routes/_authenticated/dashboard.routes'
+import { Route as AuthenticatedStudioAccountRouteImport } from './routes/_authenticated/studio_.account'
 import { Route as AuthenticatedStudioBookingRouteImport } from './routes/_authenticated/studio_.booking'
 import { Route as ApiAdminMailCheckRouteImport } from './routes/api_.admin.mail-check'
 import { Route as ApiAuthSplatRouteImport } from './routes/api_.auth.$'
@@ -693,6 +694,12 @@ const AuthenticatedDashboardRoutesRoute =
     path: '/routes',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedStudioAccountRoute =
+  AuthenticatedStudioAccountRouteImport.update({
+    id: '/studio_/account',
+    path: '/studio/account',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedStudioBookingRoute =
   AuthenticatedStudioBookingRouteImport.update({
     id: '/studio_/booking',
@@ -1242,6 +1249,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/domains': typeof AuthenticatedDashboardDomainsRoute
   '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/dashboard/routes': typeof AuthenticatedDashboardRoutesRoute
+  '/studio/account': typeof AuthenticatedStudioAccountRoute
   '/studio/booking': typeof AuthenticatedStudioBookingRoute
   '/api/admin/mail-check': typeof ApiAdminMailCheckRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -1418,6 +1426,7 @@ export interface FileRoutesByTo {
   '/dashboard/domains': typeof AuthenticatedDashboardDomainsRoute
   '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/dashboard/routes': typeof AuthenticatedDashboardRoutesRoute
+  '/studio/account': typeof AuthenticatedStudioAccountRoute
   '/studio/booking': typeof AuthenticatedStudioBookingRoute
   '/api/admin/mail-check': typeof ApiAdminMailCheckRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -1599,6 +1608,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/domains': typeof AuthenticatedDashboardDomainsRoute
   '/_authenticated/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/_authenticated/dashboard/routes': typeof AuthenticatedDashboardRoutesRoute
+  '/_authenticated/studio_/account': typeof AuthenticatedStudioAccountRoute
   '/_authenticated/studio_/booking': typeof AuthenticatedStudioBookingRoute
   '/api_/admin/mail-check': typeof ApiAdminMailCheckRoute
   '/api_/auth/$': typeof ApiAuthSplatRoute
@@ -1781,6 +1791,7 @@ export interface FileRouteTypes {
     | '/dashboard/domains'
     | '/dashboard/profile'
     | '/dashboard/routes'
+    | '/studio/account'
     | '/studio/booking'
     | '/api/admin/mail-check'
     | '/api/auth/$'
@@ -1957,6 +1968,7 @@ export interface FileRouteTypes {
     | '/dashboard/domains'
     | '/dashboard/profile'
     | '/dashboard/routes'
+    | '/studio/account'
     | '/studio/booking'
     | '/api/admin/mail-check'
     | '/api/auth/$'
@@ -2137,6 +2149,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/domains'
     | '/_authenticated/dashboard/profile'
     | '/_authenticated/dashboard/routes'
+    | '/_authenticated/studio_/account'
     | '/_authenticated/studio_/booking'
     | '/api_/admin/mail-check'
     | '/api_/auth/$'
@@ -3031,6 +3044,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRoutesRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/studio_/account': {
+      id: '/_authenticated/studio_/account'
+      path: '/studio/account'
+      fullPath: '/studio/account'
+      preLoaderRoute: typeof AuthenticatedStudioAccountRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/studio_/booking': {
       id: '/_authenticated/studio_/booking'
       path: '/studio/booking'
@@ -3765,6 +3785,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedDomainsRoute: typeof AuthenticatedDomainsRoute
   AuthenticatedMyDataRoute: typeof AuthenticatedMyDataRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedStudioAccountRoute: typeof AuthenticatedStudioAccountRoute
   AuthenticatedStudioBookingRoute: typeof AuthenticatedStudioBookingRoute
   AuthenticatedStudioPersonalFeatureRoute: typeof AuthenticatedStudioPersonalFeatureRoute
   AuthenticatedStudioWWorkspaceSlugFeatureRoute: typeof AuthenticatedStudioWWorkspaceSlugFeatureRoute
@@ -3778,6 +3799,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDomainsRoute: AuthenticatedDomainsRoute,
   AuthenticatedMyDataRoute: AuthenticatedMyDataRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedStudioAccountRoute: AuthenticatedStudioAccountRoute,
   AuthenticatedStudioBookingRoute: AuthenticatedStudioBookingRoute,
   AuthenticatedStudioPersonalFeatureRoute:
     AuthenticatedStudioPersonalFeatureRoute,

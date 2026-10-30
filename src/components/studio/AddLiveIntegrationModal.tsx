@@ -92,8 +92,8 @@ export function AddLiveIntegrationModal({ open, onClose }: { open: boolean; onCl
   return (
     <Dialog open={open} onOpenChange={(v) => !v && close()}>
       <DialogContent className="flex max-h-[90vh] flex-col gap-3 overflow-hidden p-4 sm:max-w-2xl sm:p-6">
-        <DialogHeader>
-          <DialogTitle>{connect ? `${integrationById(connect)?.label ?? ""} koppelen` : "Live integratie toevoegen"}</DialogTitle>
+        <DialogHeader className="shrink-0 pr-8 text-left">
+          <DialogTitle className="truncate">{connect ? `${integrationById(connect)?.label ?? ""} koppelen` : "Live integratie toevoegen"}</DialogTitle>
         </DialogHeader>
         {connect ? (
           <div className="min-h-0 flex-1 space-y-4 overflow-y-auto">

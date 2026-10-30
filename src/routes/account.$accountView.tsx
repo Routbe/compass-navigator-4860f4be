@@ -16,6 +16,6 @@ export const Route = createFileRoute("/account/$accountView")({
     ],
   }),
   beforeLoad: () => {
-    throw redirect({ to: "/settings" as never, replace: true });
+    throw redirect({ to: "/studio/account", replace: true });
   },
 });
