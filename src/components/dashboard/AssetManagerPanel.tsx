@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { deleteMyAsset, getMyAssetUrl, listMyAssets, uploadMyAsset } from "@/lib/assets.functions";
+import { deleteMyAsset, getActiveScopeStorage, getMyAssetUrl, listMyAssets, uploadMyAsset } from "@/lib/assets.functions";
 import { LIFETIME_MAX_BYTES, LIFETIME_MAX_FILES } from "@/lib/asset-retention";
 
 const mb = (b: number) => `${Math.round(b / 1024 / 1024)} MB`;
@@ -42,7 +42,10 @@ export function AssetManagerPanel() {
   const input = useRef<HTMLInputElement>(null);
   const [days, setDays] = useState("7");
   const [busy, setBusy] = useState(false);
+  const scopeStorage = useServerFn(getActiveScopeStorage);
   const q = useQuery({ queryKey: ["my-assets"], queryFn: () => list(), retry: false });
+  const scope = useQuery({ queryKey: ["my-assets", "scope-storage"], queryFn: () => scopeStorage(), retry: false });
+  const ws = scope.data?.scopeType === "workspace" ? scope.data : null;
 
   async function onFile(file: File | undefined) {
     if (!file) return;
@@ -53,6 +56,7 @@ export function AssetManagerPanel() {
       await qc.invalidateQueries({ queryKey: ["my-assets"] });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Upload mislukt");
+      void qc.invalidateQueries({ queryKey: ["my-assets"] });
     } finally {
       setBusy(false);
       if (input.current) input.current.value = "";
@@ -98,12 +102,17 @@ export function AssetManagerPanel() {
         <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
           <span className="font-medium">Opslag</span>
           <span className="text-xs text-muted-foreground">
-            {used.files} / {LIFETIME_MAX_FILES} bestanden gebruikt · {mb(used.bytes)} / {mb(LIFETIME_MAX_BYTES)}
+            {ws
+              ? `Workspace · ${mb(ws.usedBytes)} / ${mb(ws.quotaBytes)}`
+              : `${used.files} / ${LIFETIME_MAX_FILES} bestanden gebruikt · ${mb(used.bytes)} / ${mb(LIFETIME_MAX_BYTES)}`}
           </span>
         </div>
-        <Progress value={Math.min(100, (used.bytes / LIFETIME_MAX_BYTES) * 100)} />
+        <Progress value={ws ? (ws.quotaBytes > 0 ? Math.min(100, (ws.usedBytes / ws.quotaBytes) * 100) : 100) : Math.min(100, (used.bytes / LIFETIME_MAX_BYTES) * 100)} />
+        {ws?.message && <p className="text-xs text-destructive">{ws.message}</p>}
         <p className="text-xs text-muted-foreground">
-          {lifetime
+          {ws
+            ? "Je werkt in een workspace: uploads tellen mee voor het opslaglimiet van deze workspace."
+            : lifetime
             ? "Je account bewaart bestanden permanent."
             : "Gratis accounts bewaren bestanden tijdelijk (standaard 7 dagen, maximaal 90). Verified/Pro bewaart permanent."}
         </p>
@@ -117,7 +126,7 @@ export function AssetManagerPanel() {
           accept="image/jpeg,image/png,image/webp,image/gif,application/pdf,audio/mpeg"
           onChange={(e) => onFile(e.target.files?.[0])}
         />
-        <Button size="sm" onClick={() => input.current?.click()} disabled={busy}>
+        <Button size="sm" onClick={() => input.current?.click()} disabled={busy || Boolean(ws?.blocked)}>
           {busy ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : <Upload className="mr-1 h-4 w-4" />} Uploaden
         </Button>
         {!lifetime && (

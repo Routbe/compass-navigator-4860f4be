@@ -55,11 +55,8 @@ import { QRCodeSVG } from "qrcode.react";
 import { authClient } from "@/lib/auth-client";
 import { LOCALES, LOCALE_LABELS, useI18n } from "@/lib/i18n";
 import { useLanguagePreference } from "@/hooks/useLanguagePreference";
-import { TeamTab } from "@/components/settings/TeamTab";
-import { useWorkspaceContext } from "@/components/WorkspaceSwitcher";
-import { canManageTeam } from "@/lib/workspace-rules";
 
-type SettingsTab = "profile" | "security" | "identities" | "payments" | "data" | "status" | "team";
+type SettingsTab = "profile" | "security" | "identities" | "payments" | "data" | "status";
 
 const SETTINGS_TABS: SettingsTab[] = [
   "profile",
@@ -68,7 +65,6 @@ const SETTINGS_TABS: SettingsTab[] = [
   "payments",
   "data",
   "status",
-  "team",
 ];
 
 function parseTab(value: unknown): SettingsTab {
@@ -83,9 +79,6 @@ export default function AccountSettings() {
   const { language, save: saveLanguage } = useLanguagePreference();
   const search = useSearch({ strict: false }) as { tab?: string };
   const tab = parseTab(search.tab);
-  const { data: wsCtx } = useWorkspaceContext();
-  const activeWs = wsCtx?.workspaces.find((w) => w.id === wsCtx.activeWorkspaceId) ?? null;
-  const showTeam = Boolean(activeWs && canManageTeam(activeWs.role));
 
   const setTab = (next: SettingsTab) => {
     nav(`/settings?tab=${next}`, { replace: true });
@@ -312,22 +305,7 @@ export default function AccountSettings() {
           <TabsTrigger className="h-9 shrink-0 px-3" value="status">
             {t("settings.tabs.status")}
           </TabsTrigger>
-          {showTeam && (
-            <TabsTrigger className="h-9 shrink-0 px-3" value="team">
-              Team
-            </TabsTrigger>
-          )}
         </TabsList>
-
-        <TabsContent value="team" className="space-y-4">
-          {activeWs && showTeam ? (
-            <TeamTab workspaceId={activeWs.id} workspaceName={activeWs.name} />
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              Kies linksboven een workspace waar je eigenaar of admin bent om het team te beheren.
-            </p>
-          )}
-        </TabsContent>
 
         {/* Betalingen & facturen */}
         <TabsContent value="payments" className="space-y-4">
