@@ -82,6 +82,7 @@ import { Route as UUsernameRouteImport } from './routes/u.$username'
 import { Route as WSlugRouteImport } from './routes/w.$slug'
 import { Route as WorkspaceTransferTokenRouteImport } from './routes/workspace-transfer.$token'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminBrandsRouteImport } from './routes/_authenticated/admin.brands'
 import { Route as AuthenticatedAdminContactRouteImport } from './routes/_authenticated/admin.contact'
 import { Route as AuthenticatedAdminCustomBadgesRouteImport } from './routes/_authenticated/admin.custom-badges'
 import { Route as AuthenticatedAdminFinanceRouteImport } from './routes/_authenticated/admin.finance'
@@ -552,6 +553,12 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminBrandsRoute =
+  AuthenticatedAdminBrandsRouteImport.update({
+    id: '/brands',
+    path: '/brands',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminContactRoute =
   AuthenticatedAdminContactRouteImport.update({
     id: '/contact',
@@ -1205,6 +1212,7 @@ export interface FileRoutesByFullPath {
   '/w/$slug': typeof WSlugRoute
   '/workspace-transfer/$token': typeof WorkspaceTransferTokenRoute
   '/auth/': typeof AuthIndexRoute
+  '/admin/brands': typeof AuthenticatedAdminBrandsRoute
   '/admin/contact': typeof AuthenticatedAdminContactRoute
   '/admin/custom-badges': typeof AuthenticatedAdminCustomBadgesRoute
   '/admin/finance': typeof AuthenticatedAdminFinanceRoute
@@ -1380,6 +1388,7 @@ export interface FileRoutesByTo {
   '/w/$slug': typeof WSlugRoute
   '/workspace-transfer/$token': typeof WorkspaceTransferTokenRoute
   '/auth': typeof AuthIndexRoute
+  '/admin/brands': typeof AuthenticatedAdminBrandsRoute
   '/admin/contact': typeof AuthenticatedAdminContactRoute
   '/admin/custom-badges': typeof AuthenticatedAdminCustomBadgesRoute
   '/admin/finance': typeof AuthenticatedAdminFinanceRoute
@@ -1558,6 +1567,7 @@ export interface FileRoutesById {
   '/w/$slug': typeof WSlugRoute
   '/workspace-transfer/$token': typeof WorkspaceTransferTokenRoute
   '/auth/': typeof AuthIndexRoute
+  '/_authenticated/admin/brands': typeof AuthenticatedAdminBrandsRoute
   '/_authenticated/admin/contact': typeof AuthenticatedAdminContactRoute
   '/_authenticated/admin/custom-badges': typeof AuthenticatedAdminCustomBadgesRoute
   '/_authenticated/admin/finance': typeof AuthenticatedAdminFinanceRoute
@@ -1738,6 +1748,7 @@ export interface FileRouteTypes {
     | '/w/$slug'
     | '/workspace-transfer/$token'
     | '/auth/'
+    | '/admin/brands'
     | '/admin/contact'
     | '/admin/custom-badges'
     | '/admin/finance'
@@ -1913,6 +1924,7 @@ export interface FileRouteTypes {
     | '/w/$slug'
     | '/workspace-transfer/$token'
     | '/auth'
+    | '/admin/brands'
     | '/admin/contact'
     | '/admin/custom-badges'
     | '/admin/finance'
@@ -2090,6 +2102,7 @@ export interface FileRouteTypes {
     | '/w/$slug'
     | '/workspace-transfer/$token'
     | '/auth/'
+    | '/_authenticated/admin/brands'
     | '/_authenticated/admin/contact'
     | '/_authenticated/admin/custom-badges'
     | '/_authenticated/admin/finance'
@@ -2837,6 +2850,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/brands': {
+      id: '/_authenticated/admin/brands'
+      path: '/brands'
+      fullPath: '/admin/brands'
+      preLoaderRoute: typeof AuthenticatedAdminBrandsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/contact': {
       id: '/_authenticated/admin/contact'
       path: '/contact'
@@ -3569,6 +3589,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminBrandsRoute: typeof AuthenticatedAdminBrandsRoute
   AuthenticatedAdminContactRoute: typeof AuthenticatedAdminContactRoute
   AuthenticatedAdminCustomBadgesRoute: typeof AuthenticatedAdminCustomBadgesRoute
   AuthenticatedAdminFinanceRoute: typeof AuthenticatedAdminFinanceRoute
@@ -3587,6 +3608,7 @@ interface AuthenticatedAdminRouteChildren {
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminBrandsRoute: AuthenticatedAdminBrandsRoute,
   AuthenticatedAdminContactRoute: AuthenticatedAdminContactRoute,
   AuthenticatedAdminCustomBadgesRoute: AuthenticatedAdminCustomBadgesRoute,
   AuthenticatedAdminFinanceRoute: AuthenticatedAdminFinanceRoute,
