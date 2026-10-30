@@ -77,6 +77,7 @@ export function useScope() {
 export function WorkspaceSwitcher({ alwaysShow = false }: { alwaysShow?: boolean }) {
   const { t } = useI18n();
   const { active, workspaces, switchTo, newWorkspace, busy } = useScope();
+  const navigate = useNavigate();
   const data = { workspaces };
 
   if (!alwaysShow && !data?.workspaces.length) return null;
@@ -113,6 +114,11 @@ export function WorkspaceSwitcher({ alwaysShow = false }: { alwaysShow?: boolean
           </>
         )}
         <DropdownMenuSeparator />
+        {active && (
+          <DropdownMenuItem onClick={() => void navigate({ to: "/studio/w/$workspaceSlug/settings", params: { workspaceSlug: active.slug } })}>
+            <Users className="mr-2 h-4 w-4" /> Workspace-instellingen
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem onClick={newWorkspace}>
           <Plus className="mr-2 h-4 w-4" /> {t("workspace.new")}
         </DropdownMenuItem>

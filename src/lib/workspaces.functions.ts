@@ -186,3 +186,34 @@ export const activateScopeFromUrl = createServerFn({ method: "POST" })
     await setActiveWorkspaceCookie(id);
     return { ok: true as const, workspaceId: id };
   });
+
+/** After an upgrade to Plus/Pro: drop the random suffix or set a clean slug. Owner/admin only. */
+export const claimCleanWorkspaceSlug = createServerFn({ method: "POST" })
+  .middleware([requireAuth])
+  .inputValidator((d) => z.object({ workspaceId: uuid, slug: z.string().trim().toLowerCase().max(40).optional() }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { sql } = await import("@/lib/neon");
+    const { getWorkspaceRole } = await import("./workspaces.server");
+    const { workspaceEffectivePlan } = await import("./entitlement-engine.server");
+    const { hasBrandRelease } = await import("./reserved-brands.server");
+    const { isReservedName } = await import("./reserved-brands");
+    const { checkCleanSlugClaim, matrixWorkspaceSlug } = await import("./workspace-rules");
+    const role = await getWorkspaceRole(context.userId, data.workspaceId);
+    if (!canManageTeam(role)) throw new Error("Alleen eigenaars en admins wijzigen het workspace-adres.");
+    const ws = ((await sql`select name, slug from public.workspaces where id = ${data.workspaceId} limit 1`) as { name: string; slug: string }[])[0];
+    if (!ws) throw new Error("Workspace niet gevonden.");
+    const plan = await workspaceEffectivePlan(data.workspaceId);
+    const slug = data.slug || matrixWorkspaceSlug(ws.name, "pro");
+    const reserved = isReservedName(slug).reserved;
+    const brandReleased = reserved ? await hasBrandRelease(context.userId, slug) : false;
+    const taken = ((await sql`select 1 from public.workspaces where lower(slug) = ${slug} and id <> ${data.workspaceId} limit 1`) as unknown[]).length > 0;
+    const error = checkCleanSlugClaim({ plan, slug, currentSlug: ws.slug, reserved, brandReleased, taken });
+    if (error) throw new Error(error);
+    try {
+      await sql`update public.workspaces set slug = ${slug} where id = ${data.workspaceId}`;
+    } catch (e) {
+      if ((e as { code?: string }).code === "23505") throw new Error("Dit workspace-adres is al in gebruik.");
+      throw e;
+    }
+    return { slug };
+  });

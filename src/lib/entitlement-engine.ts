@@ -74,3 +74,15 @@ export function plusCredits(overrides: readonly Override[]): number {
   const n = Number(o?.value ?? 0);
   return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
 }
+
+/** Shown when the active scope (e.g. a free workspace) has no storage left. */
+export const STORAGE_QUOTA_MESSAGE = "Opslaglimiet bereikt voor deze omgeving (Storage Quota Exceeded). Upgrade de workspace of upload in je persoonlijke omgeving.";
+
+export type ScopeStorageSummary = { scopeType: ScopeType; plan: PlanTier; usedBytes: number; quotaBytes: number; blocked: boolean; message: string | null };
+
+/** Storage figures for the active scope, so the UI never shows the personal quota inside a workspace. */
+export function scopeStorageSummary(input: ScopeInput, usedBytes: number): ScopeStorageSummary {
+  const quotaBytes = storageQuotaBytes(input);
+  const blocked = quotaBytes <= 0 || usedBytes >= quotaBytes;
+  return { scopeType: input.scopeType, plan: effectivePlan(input), usedBytes, quotaBytes, blocked, message: blocked ? STORAGE_QUOTA_MESSAGE : null };
+}

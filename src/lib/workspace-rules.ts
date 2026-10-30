@@ -57,13 +57,14 @@ export function slugify(name: string): string {
 export const WORKSPACE_SLUG_RE = /^[a-z0-9-]+$/;
 export const RESERVED_WORKSPACE_SLUGS = ["admin", "api", "auth", "u", "w", "studio", "settings", "rout"] as const;
 
-export function isValidWorkspaceSlug(slug: string): boolean {
+/** `brandReleased`: the caller holds an admin release for this protected brand name (checked server-side). */
+export function isValidWorkspaceSlug(slug: string, opts: { brandReleased?: boolean } = {}): boolean {
   return (
     slug.length >= 3 &&
     slug.length <= 40 &&
     WORKSPACE_SLUG_RE.test(slug) &&
     !(RESERVED_WORKSPACE_SLUGS as readonly string[]).includes(slug) &&
-    !isReservedName(slug).reserved
+    (opts.brandReleased === true || !isReservedName(slug).reserved)
   );
 }
 
@@ -86,4 +87,28 @@ export function matrixWorkspaceSlug(name: string, plan: WorkspaceSlugPlan, suffi
   let base = slugify(name).slice(0, 34).replace(/-+$/, "");
   if (base.length < 3 || isReservedName(base).reserved) base = `${base || "team"}-team`.replace(/^-+/, "");
   return plan === "free" ? `${base}-${suffix}` : base;
+}
+
+/** Paid plans that may drop the random suffix (Namespace Matrix). */
+export function planAllowsCleanSlug(plan: string): plan is "plus" | "pro" | "business" {
+  return plan === "plus" || plan === "pro" || plan === "business";
+}
+
+export type CleanSlugInput = {
+  plan: string;
+  slug: string;
+  currentSlug: string;
+  reserved: boolean;
+  brandReleased: boolean;
+  taken: boolean;
+};
+
+/** Decides a clean-slug claim after an upgrade. Returns a Dutch error message, or null when allowed. */
+export function checkCleanSlugClaim(i: CleanSlugInput): string | null {
+  if (!planAllowsCleanSlug(i.plan)) return "Een schone workspace-naam is beschikbaar vanaf Plus of Pro.";
+  if (i.slug === i.currentSlug) return "Dit is al het adres van je workspace.";
+  if (i.reserved && !i.brandReleased) return "Deze naam is beschermd. Vraag een merkvrijgave aan bij ROUT.";
+  if (!isValidWorkspaceSlug(i.slug, { brandReleased: i.brandReleased })) return "Gebruik minstens 3 tekens: kleine letters, cijfers en koppeltekens.";
+  if (i.taken) return "Dit workspace-adres is al in gebruik.";
+  return null;
 }

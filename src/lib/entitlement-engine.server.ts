@@ -1,7 +1,7 @@
 /** Server-side entitlement engine: loads plan + overrides per scope and grants promotions. */
 import { sql } from "@/lib/neon";
 import { getWorkspaceRole } from "./workspaces.server";
-import { earlyVerifiedGrants, ENTITLEMENT_KEYS, plusCredits, type Override, type Scope, type ScopeInput } from "./entitlement-engine";
+import { earlyVerifiedGrants, scopeStorageSummary, type ScopeStorageSummary, ENTITLEMENT_KEYS, plusCredits, type Override, type Scope, type ScopeInput } from "./entitlement-engine";
 
 type Row = Record<string, unknown>;
 
@@ -74,4 +74,18 @@ export async function checkActiveScopeUpload(userId: string, bytes: number): Pro
   const scope: Scope = workspaceId ? { type: "workspace", id: workspaceId } : { type: "user", id: userId };
   const d = decidePresign(await loadScopeInput(scope), await scopeUsedBytes(scope), bytes);
   return d.ok ? { ok: true } : { ok: false, status: 403, error: d.error };
+}
+
+/** Storage summary for the caller's active scope (same scope resolution as checkActiveScopeUpload). */
+export async function activeScopeStorage(userId: string): Promise<ScopeStorageSummary> {
+  const { resolveActiveWorkspace } = await import("./workspaces.server");
+  const { workspaceId } = await resolveActiveWorkspace(userId);
+  const scope: Scope = workspaceId ? { type: "workspace", id: workspaceId } : { type: "user", id: userId };
+  return scopeStorageSummary(await loadScopeInput(scope), await scopeUsedBytes(scope));
+}
+
+/** Effective plan of a workspace (stored plan + overrides such as a redeemed Plus credit). */
+export async function workspaceEffectivePlan(workspaceId: string): Promise<string> {
+  const { effectivePlan } = await import("./entitlement-engine");
+  return effectivePlan(await loadScopeInput({ type: "workspace", id: workspaceId }));
 }

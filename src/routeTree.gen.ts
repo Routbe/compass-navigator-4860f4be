@@ -186,6 +186,7 @@ import { Route as AuthenticatedConsoleAppsAppIdSchemaRouteImport } from './route
 import { Route as AuthenticatedConsoleAppsAppIdScopesRouteImport } from './routes/_authenticated/console.apps.$appId.scopes'
 import { Route as AuthenticatedConsoleAppsAppIdSecurityRouteImport } from './routes/_authenticated/console.apps.$appId.security'
 import { Route as AuthenticatedStudioWWorkspaceSlugFeatureRouteImport } from './routes/_authenticated/studio_.w.$workspaceSlug.$feature'
+import { Route as AuthenticatedStudioWWorkspaceSlugSettingsRouteImport } from './routes/_authenticated/studio_.w.$workspaceSlug.settings'
 import { Route as ApiPublicBookingsIdActionRouteImport } from './routes/api_.public.bookings.$id.$action'
 
 const IndexRoute = IndexRouteImport.update({
@@ -1133,6 +1134,12 @@ const AuthenticatedStudioWWorkspaceSlugFeatureRoute =
     path: '/studio/w/$workspaceSlug/$feature',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedStudioWWorkspaceSlugSettingsRoute =
+  AuthenticatedStudioWWorkspaceSlugSettingsRouteImport.update({
+    id: '/studio_/w/$workspaceSlug/settings',
+    path: '/studio/w/$workspaceSlug/settings',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const ApiPublicBookingsIdActionRoute =
   ApiPublicBookingsIdActionRouteImport.update({
     id: '/api_/public/bookings/$id/$action',
@@ -1316,6 +1323,7 @@ export interface FileRoutesByFullPath {
   '/console/apps/$appId/scopes': typeof AuthenticatedConsoleAppsAppIdScopesRoute
   '/console/apps/$appId/security': typeof AuthenticatedConsoleAppsAppIdSecurityRoute
   '/studio/w/$workspaceSlug/$feature': typeof AuthenticatedStudioWWorkspaceSlugFeatureRoute
+  '/studio/w/$workspaceSlug/settings': typeof AuthenticatedStudioWWorkspaceSlugSettingsRoute
   '/api/public/bookings/$id/$action': typeof ApiPublicBookingsIdActionRoute
   '/console/apps/$appId/': typeof AuthenticatedConsoleAppsAppIdIndexRoute
 }
@@ -1490,6 +1498,7 @@ export interface FileRoutesByTo {
   '/console/apps/$appId/scopes': typeof AuthenticatedConsoleAppsAppIdScopesRoute
   '/console/apps/$appId/security': typeof AuthenticatedConsoleAppsAppIdSecurityRoute
   '/studio/w/$workspaceSlug/$feature': typeof AuthenticatedStudioWWorkspaceSlugFeatureRoute
+  '/studio/w/$workspaceSlug/settings': typeof AuthenticatedStudioWWorkspaceSlugSettingsRoute
   '/api/public/bookings/$id/$action': typeof ApiPublicBookingsIdActionRoute
   '/console/apps/$appId': typeof AuthenticatedConsoleAppsAppIdIndexRoute
 }
@@ -1671,6 +1680,7 @@ export interface FileRoutesById {
   '/_authenticated/console/apps/$appId/scopes': typeof AuthenticatedConsoleAppsAppIdScopesRoute
   '/_authenticated/console/apps/$appId/security': typeof AuthenticatedConsoleAppsAppIdSecurityRoute
   '/_authenticated/studio_/w/$workspaceSlug/$feature': typeof AuthenticatedStudioWWorkspaceSlugFeatureRoute
+  '/_authenticated/studio_/w/$workspaceSlug/settings': typeof AuthenticatedStudioWWorkspaceSlugSettingsRoute
   '/api_/public/bookings/$id/$action': typeof ApiPublicBookingsIdActionRoute
   '/_authenticated/console/apps/$appId/': typeof AuthenticatedConsoleAppsAppIdIndexRoute
 }
@@ -1852,6 +1862,7 @@ export interface FileRouteTypes {
     | '/console/apps/$appId/scopes'
     | '/console/apps/$appId/security'
     | '/studio/w/$workspaceSlug/$feature'
+    | '/studio/w/$workspaceSlug/settings'
     | '/api/public/bookings/$id/$action'
     | '/console/apps/$appId/'
   fileRoutesByTo: FileRoutesByTo
@@ -2026,6 +2037,7 @@ export interface FileRouteTypes {
     | '/console/apps/$appId/scopes'
     | '/console/apps/$appId/security'
     | '/studio/w/$workspaceSlug/$feature'
+    | '/studio/w/$workspaceSlug/settings'
     | '/api/public/bookings/$id/$action'
     | '/console/apps/$appId'
   id:
@@ -2206,6 +2218,7 @@ export interface FileRouteTypes {
     | '/_authenticated/console/apps/$appId/scopes'
     | '/_authenticated/console/apps/$appId/security'
     | '/_authenticated/studio_/w/$workspaceSlug/$feature'
+    | '/_authenticated/studio_/w/$workspaceSlug/settings'
     | '/api_/public/bookings/$id/$action'
     | '/_authenticated/console/apps/$appId/'
   fileRoutesById: FileRoutesById
@@ -3578,6 +3591,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStudioWWorkspaceSlugFeatureRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/studio_/w/$workspaceSlug/settings': {
+      id: '/_authenticated/studio_/w/$workspaceSlug/settings'
+      path: '/studio/w/$workspaceSlug/settings'
+      fullPath: '/studio/w/$workspaceSlug/settings'
+      preLoaderRoute: typeof AuthenticatedStudioWWorkspaceSlugSettingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/api_/public/bookings/$id/$action': {
       id: '/api_/public/bookings/$id/$action'
       path: '/api/public/bookings/$id/$action'
@@ -3748,6 +3768,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedStudioBookingRoute: typeof AuthenticatedStudioBookingRoute
   AuthenticatedStudioPersonalFeatureRoute: typeof AuthenticatedStudioPersonalFeatureRoute
   AuthenticatedStudioWWorkspaceSlugFeatureRoute: typeof AuthenticatedStudioWWorkspaceSlugFeatureRoute
+  AuthenticatedStudioWWorkspaceSlugSettingsRoute: typeof AuthenticatedStudioWWorkspaceSlugSettingsRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -3762,6 +3783,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
     AuthenticatedStudioPersonalFeatureRoute,
   AuthenticatedStudioWWorkspaceSlugFeatureRoute:
     AuthenticatedStudioWWorkspaceSlugFeatureRoute,
+  AuthenticatedStudioWWorkspaceSlugSettingsRoute:
+    AuthenticatedStudioWWorkspaceSlugSettingsRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

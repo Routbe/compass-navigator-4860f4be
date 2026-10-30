@@ -39,3 +39,11 @@ export const deleteMyAsset = createServerFn({ method: "POST" })
     const { deleteAsset } = await import("./assets.server");
     return deleteAsset(context.userId, data.id);
   });
+
+/** Storage used/limit for the active scope (personal or workspace). */
+export const getActiveScopeStorage = createServerFn({ method: "GET" })
+  .middleware([requireAuth])
+  .handler(async ({ context }) => {
+    const { activeScopeStorage } = await import("./entitlement-engine.server");
+    return activeScopeStorage(context.userId);
+  });
