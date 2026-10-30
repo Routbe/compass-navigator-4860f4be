@@ -11,9 +11,9 @@
 - [ ] Acceptatie live: volledige Vitest-suite, replay/catalog/no-runtime-DDL en ingelogde end-to-end controles
 - [ ] Infra buiten code: signing KEK op Vercel, bestaande keys verzegelen en public CREATE-recht intrekken
 
-- [ ] Enterprise booking: publieke intakevragen en veilige opslag afronden
-- [ ] Enterprise booking: capaciteit en uitzonderingen controleren
-- [ ] Smart widget: drie vrije tijden en vooraf gekozen boekingscontext
+- [x] Enterprise booking: publieke intakevragen en veilige opslag (intake.ts + tests)
+- [x] Enterprise booking: capaciteit en uitzonderingen (gedeelde plaatsen, tests)
+- [x] Smart widget: drie vrije tijden en vooraf gekozen boekingscontext (BookingCard)
 - [ ] Nieuwe migraties uitvoeren en volledige scope/RLS-audit verifiëren
 - [ ] Preview-testaccount seeden en ingelogde workspace/tabs/0 MB-upload controleren
 - [x] Nieuwe regeltests en architectuurnotities afronden
