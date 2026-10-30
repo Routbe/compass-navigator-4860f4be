@@ -141,6 +141,7 @@ import { oauthAvatarOf } from "@/lib/oauth-avatar";
 import { BlueskyWizard } from "@/components/dashboard/BlueskyWizard";
 import { LiveStatusAccordion } from "@/components/studio/LiveStatusAccordion";
 import { ShareMenu } from "@/components/profile/ShareMenu";
+import { DesignTemplatesPanel } from "@/components/settings/DesignTemplatesPanel";
 
 export type ProfileVariant = "verified" | "alias";
 
@@ -1137,6 +1138,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
               />
           )}
 
+          {tab === "design" && <DesignTemplatesPanel />}
           {tab === "design" && (
             <Accordion type="single" collapsible className="space-y-3">
               <ProfileThemePicker

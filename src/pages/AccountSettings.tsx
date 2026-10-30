@@ -16,7 +16,6 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { PasskeysPanel } from "@/components/settings/PasskeysPanel";
 import { ConnectedAppsPanel } from "@/components/settings/ConnectedAppsPanel";
 import { PasswordPanel } from "@/components/settings/PasswordPanel";
-import { DesignTemplatesPanel } from "@/components/settings/DesignTemplatesPanel";
 import { getPasswordState, requestSecurityCode, confirmSecurityCode } from "@/lib/account-security.functions";
 import { useServerFn } from "@tanstack/react-start";
 import { ConnectedAccounts } from "@/components/settings/ConnectedAccounts";
@@ -417,7 +416,6 @@ export default function AccountSettings() {
               })}
             </div>
           </section>
-          <DesignTemplatesPanel />
         </TabsContent>
 
         {/* Tab 2 — Account & security */}
