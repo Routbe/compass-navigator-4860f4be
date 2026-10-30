@@ -6,7 +6,7 @@ import { checkCleanSlugClaim, matrixWorkspaceSlug } from "@/lib/workspace-rules"
 import { scopeStorageSummary, STORAGE_QUOTA_MESSAGE } from "@/lib/entitlement-engine";
 
 const ROOT = join(__dirname, "..", "..");
-const base = { slug: "studio", currentSlug: "studio-k4f9", reserved: false, brandReleased: false, taken: false };
+const base = { slug: "atelier", currentSlug: "atelier-k4f9", reserved: false, brandReleased: false, taken: false };
 
 describe("clean workspace slug after upgrade", () => {
   it("refuses a free workspace", () => {
@@ -25,8 +25,8 @@ describe("clean workspace slug after upgrade", () => {
     expect(checkCleanSlugClaim({ ...r, brandReleased: true })).toBeNull();
   });
   it("paid plans derive the slug without the 4-char suffix", () => {
-    expect(matrixWorkspaceSlug("Studio", "pro", "k4f9")).toBe("studio");
-    expect(matrixWorkspaceSlug("Studio", "free", "k4f9")).toBe("studio-k4f9");
+    expect(matrixWorkspaceSlug("Atelier", "pro", "k4f9")).toBe("atelier");
+    expect(matrixWorkspaceSlug("Atelier", "free", "k4f9")).toBe("atelier-k4f9");
   });
 });
 
