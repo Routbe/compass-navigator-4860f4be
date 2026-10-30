@@ -54,7 +54,7 @@ export async function listAssets(userId: string) {
 }
 
 /** Shown in the upload toast when the active scope (e.g. a free workspace) has no storage left. */
-export const STORAGE_QUOTA_MESSAGE = "Opslaglimiet bereikt voor deze omgeving (Storage Quota Exceeded). Upgrade de workspace of upload in je persoonlijke omgeving.";
+export { STORAGE_QUOTA_MESSAGE } from "./entitlement-engine";
 
 export async function uploadAsset(input: { userId: string; bytes: Uint8Array; fileName: string; days?: number }) {
   if (input.bytes.byteLength === 0) throw new Error("Het bestand is leeg.");
