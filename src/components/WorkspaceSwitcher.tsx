@@ -77,6 +77,7 @@ export function useScope() {
 export function WorkspaceSwitcher({ alwaysShow = false }: { alwaysShow?: boolean }) {
   const { t } = useI18n();
   const { active, workspaces, switchTo, newWorkspace, busy } = useScope();
+  const navigate = useNavigate();
   const data = { workspaces };
 
   if (!alwaysShow && !data?.workspaces.length) return null;
