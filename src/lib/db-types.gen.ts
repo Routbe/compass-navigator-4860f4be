@@ -591,6 +591,18 @@ export interface PublicDiditMonthlyUsageRow {
   "success_count": number;
 }
 
+export interface PublicDomainClaimsRow {
+  "id": string;
+  "user_id": string;
+  "domain": string;
+  "handle": string;
+  "status": string;
+  "verified_at": string | Date | null;
+  "last_checked_at": string | Date | null;
+  "failing_since": string | Date | null;
+  "created_at": string | Date;
+}
+
 export interface PublicEmailAliasesRow {
   "id": string;
   "user_id": string;
@@ -1831,6 +1843,7 @@ export interface DbTables {
   "public.custom_badges": PublicCustomBadgesRow;
   "public.custom_domains": PublicCustomDomainsRow;
   "public.didit_monthly_usage": PublicDiditMonthlyUsageRow;
+  "public.domain_claims": PublicDomainClaimsRow;
   "public.email_aliases": PublicEmailAliasesRow;
   "public.entitlement_overrides": PublicEntitlementOverridesRow;
   "public.fediverse_email_otp": PublicFediverseEmailOtpRow;

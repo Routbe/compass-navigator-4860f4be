@@ -5468,6 +5468,149 @@
     },
     {
       "schema": "public",
+      "name": "domain_claims",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "notNull": true,
+          "default": "gen_random_uuid()",
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "notNull": true,
+          "default": null,
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "domain",
+          "type": "text",
+          "notNull": true,
+          "default": null,
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "handle",
+          "type": "text",
+          "notNull": true,
+          "default": null,
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "notNull": true,
+          "default": "'pending'::text",
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "verified_at",
+          "type": "timestamp with time zone",
+          "notNull": false,
+          "default": null,
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "last_checked_at",
+          "type": "timestamp with time zone",
+          "notNull": false,
+          "default": null,
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "failing_since",
+          "type": "timestamp with time zone",
+          "notNull": false,
+          "default": null,
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "notNull": true,
+          "default": "now()",
+          "identity": null,
+          "generated": null
+        }
+      ],
+      "constraints": [
+        {
+          "name": "domain_claims_domain_check",
+          "kind": "c",
+          "def": "CHECK (((domain = lower(domain)) AND (domain ~ '^[a-z0-9.-]+$'::text)))"
+        },
+        {
+          "name": "domain_claims_domain_unique",
+          "kind": "u",
+          "def": "UNIQUE (domain)"
+        },
+        {
+          "name": "domain_claims_grace",
+          "kind": "c",
+          "def": "CHECK (((status <> 'grace'::text) OR (failing_since IS NOT NULL)))"
+        },
+        {
+          "name": "domain_claims_handle_check",
+          "kind": "c",
+          "def": "CHECK (((handle = lower(handle)) AND (handle ~ '^[a-z0-9-]{2,40}$'::text)))"
+        },
+        {
+          "name": "domain_claims_pkey",
+          "kind": "p",
+          "def": "PRIMARY KEY (id)"
+        },
+        {
+          "name": "domain_claims_status_check",
+          "kind": "c",
+          "def": "CHECK ((status = ANY (ARRAY['pending'::text, 'verified'::text, 'grace'::text, 'released'::text])))"
+        },
+        {
+          "name": "domain_claims_user_id_fkey",
+          "kind": "f",
+          "def": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX domain_claims_recheck_idx ON public.domain_claims USING btree (last_checked_at) WHERE (status = ANY (ARRAY['verified'::text, 'grace'::text]))",
+        "CREATE INDEX domain_claims_user_idx ON public.domain_claims USING btree (user_id)",
+        "CREATE UNIQUE INDEX domain_claims_active_handle ON public.domain_claims USING btree (handle) WHERE (status = ANY (ARRAY['verified'::text, 'grace'::text]))"
+      ],
+      "triggers": [],
+      "rls": true,
+      "forceRls": false,
+      "policies": [
+        {
+          "name": "domain_claims_owner",
+          "permissive": true,
+          "roles": [
+            "rout_app"
+          ],
+          "cmd": "ALL",
+          "using": "((user_id)::text = current_setting('rout.user_id'::text, true))",
+          "check": "((user_id)::text = current_setting('rout.user_id'::text, true))"
+        }
+      ],
+      "grants": {
+        "rout_app": [
+          "DELETE",
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      }
+    },
+    {
+      "schema": "public",
       "name": "email_aliases",
       "columns": [
         {
