@@ -113,6 +113,11 @@ export function WorkspaceSwitcher({ alwaysShow = false }: { alwaysShow?: boolean
           </>
         )}
         <DropdownMenuSeparator />
+        {active && (
+          <DropdownMenuItem onClick={() => void navigate({ to: "/studio/w/$workspaceSlug/settings", params: { workspaceSlug: active.slug } })}>
+            <Users className="mr-2 h-4 w-4" /> Workspace-instellingen
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem onClick={newWorkspace}>
           <Plus className="mr-2 h-4 w-4" /> {t("workspace.new")}
         </DropdownMenuItem>
