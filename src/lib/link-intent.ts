@@ -4,7 +4,7 @@
  * session and never moves an identity that belongs to another member.
  */
 export const LINK_INTENT_COOKIE = "rout_link_intent";
-const SETTINGS = "/settings?tab=identities";
+const SETTINGS = "/studio/account?tab=identities";
 
 export function linkIntentCookie(on: boolean) {
   return on

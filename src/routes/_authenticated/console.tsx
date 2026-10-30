@@ -137,7 +137,7 @@ function ConsoleWorkspace() {
           <WorkspaceSwitcher alwaysShow />
           <div className="ml-auto flex items-center gap-2">
             {allowed && <ConsoleTour />}
-            <Link to="/settings" data-tour="settings" className="rounded-md p-1.5 hover:bg-muted" aria-label={t("consoleTour.settings.title")}><SlidersHorizontal className="h-4 w-4" /></Link>
+            <Link to="/studio/account" data-tour="settings" className="rounded-md p-1.5 hover:bg-muted" aria-label={t("consoleTour.settings.title")}><SlidersHorizontal className="h-4 w-4" /></Link>
             <LanguageToggle className="hidden sm:inline-flex" />
             <ProfileMenu />
           </div>

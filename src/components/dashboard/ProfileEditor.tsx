@@ -1349,7 +1349,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
                       {t("studio.editor.billingHelp")}
                     </p>
                     <a
-                      href="/settings?tab=payments"
+                      href="/studio/account?tab=payments"
                       className="inline-block rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted"
                     >
                       {t("studio.editor.billingLink")}
@@ -1375,7 +1375,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
                       {t("studio.editor.dataHelp")}
                     </p>
                     <a
-                      href="/settings?tab=data"
+                      href="/studio/account?tab=data"
                       className="inline-block rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted"
                     >
                       {t("studio.editor.dataLink")}

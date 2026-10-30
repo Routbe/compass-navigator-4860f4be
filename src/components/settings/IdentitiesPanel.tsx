@@ -9,7 +9,7 @@ import type { IdentityRow } from "@/lib/identities.server";
 import { EMAIL_TRUST_LABEL, emailTrust } from "@/lib/email-trust";
 import { AUTH_PROVIDERS, FediverseDialog, ProviderMark, type AuthProvider } from "@/components/auth/ProviderKit";
 
-const RETURN_PATH = "/settings?tab=identities";
+const RETURN_PATH = "/studio/account?tab=identities";
 
 /** Tab 3 — link and manage every external identity from one list. */
 export function IdentitiesPanel() {
