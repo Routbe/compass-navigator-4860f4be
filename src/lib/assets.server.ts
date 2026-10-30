@@ -54,7 +54,8 @@ export async function listAssets(userId: string) {
 }
 
 /** Shown in the upload toast when the active scope (e.g. a free workspace) has no storage left. */
-export { STORAGE_QUOTA_MESSAGE } from "./entitlement-engine";
+import { STORAGE_QUOTA_MESSAGE } from "./entitlement-engine";
+export { STORAGE_QUOTA_MESSAGE };
 
 export async function uploadAsset(input: { userId: string; bytes: Uint8Array; fileName: string; days?: number }) {
   if (input.bytes.byteLength === 0) throw new Error("Het bestand is leeg.");
