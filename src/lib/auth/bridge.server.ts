@@ -83,7 +83,8 @@ export async function bridgeIdentity(identity: RoutIdentity): Promise<SessionUse
                              || ${JSON.stringify({ neon_auth_id: identity.id })}::jsonb,
                email_confirmed_at = coalesce(email_confirmed_at,
                                              ${identity.emailVerified ? new Date().toISOString() : null}),
-               last_sign_in_at = now()
+               last_sign_in_at = now(),
+               auth_user_id = coalesce(auth_user_id, ${identity.id}::uuid)
          where id = ${row["id"] as string}
       `;
     } else {
@@ -97,9 +98,9 @@ export async function bridgeIdentity(identity: RoutIdentity): Promise<SessionUse
     };
     const inserted = (await sql`
       insert into public.users (id, email, user_metadata, email_confirmed_at,
-                                last_sign_in_at)
+                                last_sign_in_at, auth_user_id)
       values (${identity.id}, ${identity.email}, ${JSON.stringify(metadata)}::jsonb,
-              ${identity.emailVerified ? new Date().toISOString() : null}, now())
+              ${identity.emailVerified ? new Date().toISOString() : null}, now(), ${identity.id}::uuid)
       on conflict (email_normalized) do nothing
       returning id, email, email_confirmed_at, user_metadata, app_metadata, created_at,
                 last_sign_in_at
